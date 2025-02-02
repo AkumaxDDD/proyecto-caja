@@ -1,0 +1,29 @@
+{
+  "name": "aplicacion-caja",
+  "version": "1.0.0",
+  "description": "Aplicación de caja con React y Electron",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "electron": "electron .",
+    "start": " \"npm run electron\""
+  },
+  "dependencies": {
+    "@capacitor-community/sqlite": "^7.0.0",
+    "@capacitor/android": "^7.0.1",
+    "@capacitor/cli": "^7.0.1",
+    "@capacitor/core": "^7.0.1",
+    "idb": "^8.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^7.6.0",
+    "electron": "^34.0.2",
+    "electron-builder": "^25.1.8",
+    "vite": "^4.3.2"
+  }
+}
