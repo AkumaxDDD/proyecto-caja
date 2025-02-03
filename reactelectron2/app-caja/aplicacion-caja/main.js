@@ -8,9 +8,11 @@ function createWindow() {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
-            enableRemoteModule: true,
-            nodeIntegration: true,
+            enableRemoteModule: false, // No es recomendable habilitar enableRemoteModule
+            nodeIntegration: false, // Mejor desactivar nodeIntegration por seguridad
         },
+        autoHideMenuBar: true, // Oculta la barra de menú pero permite mostrarla con Alt
+        frame: true, // Mantiene los botones de cerrar, minimizar y maximizar
     });
 
     // Cargar el archivo HTML (en tu caso debería ser el archivo compilado por Vite)

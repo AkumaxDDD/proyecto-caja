@@ -1,98 +1,177 @@
-import { useEffect, useState } from 'react';
-import { initializeDatabase, getProductos, addProducto } from '../database';
+import React, { useState } from 'react';
 
-function Cobrar({ setCaja }) {
-    console.log(setCaja);  // Verificar si setCaja es una función
-
-    const [productos, setProductos] = useState([]);
-    const [db, setDb] = useState(null);
-    // const [nombre, setNombre] = useState("");
-    // const [precio, setPrecio] = useState("");
+function Cobrar({ db, productos, setCaja }) {
     const [productosSeleccionados, setProductosSeleccionados] = useState([]);
     const [total, setTotal] = useState(0);
+    const [busqueda, setBusqueda] = useState("");
+    const [resultadosBusqueda, setResultadosBusqueda] = useState([]);
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const database = await initializeDatabase();
-                setDb(database);
-                const productos = await getProductos(database);
-                setProductos(productos);
-            } catch (error) {
-                console.error("Error inicializando la base de datos:", error);
-            }
+    // Función para buscar productos
+    const handleBuscarProducto = () => {
+        if (!busqueda.trim()) {
+            setResultadosBusqueda([]);
+            return;
         }
-        fetchData();
-    }, []);
 
-    // const handleAddProducto = async () => {
-    //     if (db && nombre && precio) {
-    //         try {
-    //             await addProducto(db, nombre, parseFloat(precio));
-    //             const productos = await getProductos(db);
-    //             setProductos(productos);
-    //             setNombre('');
-    //             setPrecio('');
-    //         } catch (error) {
-    //             console.error("Error agregando producto:", error);
-    //         }
-    //     }
-    // };
+        const resultados = productos.filter((producto) => {
+            const codigoMatch = producto.codigo?.toLowerCase().includes(busqueda.toLowerCase());
+            const nombreMatch = producto.nombre?.toLowerCase().includes(busqueda.toLowerCase());
+            const precioMatch = producto.precio === parseFloat(busqueda);
 
+            return codigoMatch || nombreMatch || precioMatch;
+        });
+
+        setResultadosBusqueda(resultados);
+
+        if (resultados.length === 1) {
+            handleSeleccionarProducto(resultados[0]);
+            setBusqueda("");
+        }
+    };
+
+    // Función para seleccionar un producto
     const handleSeleccionarProducto = (producto) => {
-        setProductosSeleccionados(prev => {
+        setProductosSeleccionados((prev) => {
             const nuevoTotal = prev.reduce((acc, p) => acc + p.precio, 0) + producto.precio;
             setTotal(nuevoTotal);
             return [...prev, producto];
         });
     };
 
+    // Función para realizar un cobro
     const handleCobrar = () => {
-        console.log("setCaja", setCaja);
+        if (!setCaja || typeof setCaja !== "function") {
+            console.error("setCaja no es una función válida");
+            return;
+        }
+
         if (total > 0) {
-            setCaja(prev => [...prev, { productos: productosSeleccionados, total }]);
+            setCaja((prev) => [...prev, { productos: productosSeleccionados, total }]);
             setProductosSeleccionados([]);
             setTotal(0);
         }
     };
 
     return (
-        <div>
-            <h1>Productos Disponibles</h1>
-            <ul>
-                {productos.map((producto) => (
-                    <li key={producto.id}>
-                        {producto.nombre} - ${producto.precio}
-                        <button onClick={() => handleSeleccionarProducto(producto)}>Seleccionar</button>
-                    </li>
-                ))}
-            </ul>
+        <div className="cobrar-container">
+            <h1>Cobrar</h1>
 
-            <h2>Productos Seleccionados</h2>
-            <ul>
-                {productosSeleccionados.map((producto, index) => (
-                    <li key={index}>{producto.nombre} - ${producto.precio}</li>
-                ))}
-            </ul>
+            {/* Campo de búsqueda */}
+            <div className="search-section">
+                <input
+                    type="text"
+                    placeholder="Buscar por código, nombre o precio"
+                    value={busqueda}
+                    onChange={(e) => setBusqueda(e.target.value)}
+                />
+                <button onClick={handleBuscarProducto}>
+                    <i className="fa-solid fa-magnifying-glass"></i> Buscar
+                </button>
+            </div>
 
-            <h3>Total: ${total}</h3>
+            {/* Resultados de búsqueda */}
+            {resultadosBusqueda.length > 0 && (
+                <div className="results-section">
+                    <h3>Resultados de Búsqueda</h3>
+                    <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Descripción</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            {resultadosBusqueda.map((producto) => (
+                                <tr key={producto.id}>
+                                    <td><strong>{producto.codigo}</strong></td>
+                                    <td data-label="Nombre">{producto.nombre}</td>
+                                    <td data-label="Precio">${producto.precio}</td>
+                                    <td data-label="Descripción"><em>{producto.descripcion}</em></td>
+                                    <td>
+                                        <button onClick={() => handleSeleccionarProducto(producto)}>
+                                            <i className="fa-solid fa-plus"></i> Seleccionar
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+                </div>
+            )}
 
-            {/* <h3>Agregar Nuevo Producto</h3>
-            <input
-                type="text"
-                placeholder="Nombre del producto"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-            />
-            <input
-                type="number"
-                placeholder="Precio del producto"
-                value={precio}
-                onChange={(e) => setPrecio(e.target.value)}
-            />
-            <button onClick={handleAddProducto}>Agregar Producto</button> */}
+            {/* Productos seleccionados */}
+            <div className="selected-products-section">
+                <h2>Productos Seleccionados</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Descripción</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {productosSeleccionados.length > 0 ? (
+                            productosSeleccionados.map((producto, index) => (
+                                <tr key={producto.id}>
+                                    <td><strong>{producto.codigo}</strong></td>
+                                    <td data-label="Nombre">{producto.nombre}</td>
+                                    <td data-label="Precio">${producto.precio}</td>
+                                    <td data-label="Descripción"><em>{producto.descripcion}</em></td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5">No hay productos seleccionados.</td>
+                            </tr>
+                        )
+                        }
+                    </tbody>
+                </table>
+                <h3>Total: ${total.toFixed(2)}</h3>
+                <button onClick={handleCobrar} className="cobrar-button">
+                    <i className="fa-solid fa-cash-register"></i> Cobrar
+                </button>
+            </div>
 
-            <button onClick={handleCobrar}>Cobrar</button>
+            {/* Lista de productos */}
+            <div className="product-list-section">
+                <h3>Lista de Productos</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Descripción</th>
+                            <th>Fecha de Creación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {productos.length > 0 ? (
+                            productos.map((producto) => (
+                                <tr key={producto.id}>
+                                    <td><strong>{producto.codigo}</strong></td>
+                                    <td data-label="Nombre">{producto.nombre}</td>
+                                    <td data-label="Precio">${producto.precio}</td>
+                                    <td data-label="Descripción"><em>{producto.descripcion}</em></td>
+                                    <td data-label="Fecha">{new Date(producto.fechaCreacion).toLocaleDateString()}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5">No hay productos disponibles.</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

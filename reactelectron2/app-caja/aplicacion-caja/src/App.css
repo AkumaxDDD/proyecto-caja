@@ -1,4 +1,4 @@
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -39,4 +39,166 @@
 
 .read-the-docs {
   color: #888;
+} */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Botones */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  background-color: #007bff; /* Azul principal */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #0056b3; /* Azul oscuro al pasar el mouse */
+  transform: translateY(-2px); /* Efecto de elevación */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: translateY(0); /* Regresa al estado original al hacer clic */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button i {
+  font-size: 18px;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #007bff; /* Azul principal */
+  color: white;
+}
+
+th, td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  word-wrap: break-word;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2; /* Fondo alternativo para filas pares */
+}
+
+tbody tr:hover {
+  background-color: #e0e0e0; /* Resaltar fila al pasar el mouse */
+}
+
+/* Inputs */
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: #007bff; /* Cambiar borde al enfocar */
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Títulos y texto */
+h1, h2, h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 20px;
+}
+
+h2 {
+  font-size: 1.75rem;
+  margin-top: 20px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-top: 15px;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Contenedores generales */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+  }
+
+  th, td {
+      min-width: 150px;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+      font-size: 14px;
+      padding: 8px;
+  }
+
+  button {
+      font-size: 14px;
+      padding: 8px 15px;
+  }
 }
