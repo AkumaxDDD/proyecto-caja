@@ -5,6 +5,7 @@ import Editar from './Editar';
 import Eliminar from './Eliminar';
 import Caja from './Caja';
 import CierreCaja from './CierreCaja';
+import Configuracion from './Configuracion';
 import { initializeDatabase, getProductos } from '../database';
 import "./Menu.css";
 
@@ -20,6 +21,7 @@ function Menu() {
         return localStorage.getItem('theme') === 'dark';
     });
 
+    // Inicializar la base de datos y cargar productos
     useEffect(() => {
         async function fetchData() {
             try {
@@ -37,17 +39,23 @@ function Menu() {
         document.body.classList.toggle('dark-mode', isDarkMode);
     }, []);
 
+    // Guardar el tema en localStorage y aplicarlo al <body>
     useEffect(() => {
-        // Guardar el tema en localStorage y aplicarlo al <body>
         localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
         document.body.classList.toggle('dark-mode', isDarkMode);
     }, [isDarkMode]);
 
+    // Función para alternar el modo oscuro/claro
     const toggleTheme = () => {
         setIsDarkMode((prevMode) => !prevMode);
     };
 
+    // Renderizar la página actual
     const renderPage = () => {
+        if (!db) {
+            return <div className="loading-screen">Cargando...</div>;
+        }
+
         switch (currentPage) {
             case 'cobrar':
                 return <Cobrar db={db} productos={productos} setCaja={setCaja} />;
@@ -58,9 +66,11 @@ function Menu() {
             case 'eliminar':
                 return <Eliminar db={db} setProductos={setProductos} />;
             case 'caja':
-                return <Caja caja={caja} setCaja={setCaja} cierres={cierres} setCierres={setCierres} />;
+                return <Caja db={db} caja={caja} setCaja={setCaja} />;
             case 'cierre':
-                return <CierreCaja cierres={cierres} />;
+                return <CierreCaja db={db} />;
+            case 'configuracion':
+                return <Configuracion db={db} />;
             default:
                 return <Cobrar db={db} productos={productos} setCaja={setCaja} />;
         }
@@ -112,11 +122,17 @@ function Menu() {
                     >
                         <i className="fa-solid fa-file-invoice-dollar"></i> Cierre de Caja
                     </li>
+                    <li className={currentPage === 'configuracion' ? 'active' : ''}
+                        onClick={() => setCurrentPage('configuracion')}
+                    >
+                        <i className="fa-solid fa-gear"></i> Configuración
+                    </li>
                     {/* Botón para alternar el modo oscuro/claro */}
                     <li className="theme-toggle" onClick={toggleTheme}>
                         <i className={`fa-solid ${isDarkMode ? 'fa-sun' : 'fa-moon'}`}></i>{' '}
                         {isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
                     </li>
+
                 </ul>
             </nav>
 

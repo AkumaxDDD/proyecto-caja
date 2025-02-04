@@ -78,6 +78,23 @@ tbody tr:hover {
     margin-top: 10px;
 }
 
+.remove-button {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.remove-button:hover {
+    background-color: #b02a37;
+}
+
 /* Responsive Design */
 @media (max-width: 884px) {
     .search-section {
@@ -88,13 +105,19 @@ tbody tr:hover {
     .search-section button {
         width: 100%;
     }
-/* Estilos para transformar tablas en tarjetas */
-    table, thead, tbody, th, td, tr {
+
+    /* Estilos para transformar tablas en tarjetas */
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
         display: block;
     }
 
     thead {
-        display: none; /* Ocultar el encabezado en dispositivos móviles */
+        display: none;
     }
 
     tr {
@@ -113,7 +136,7 @@ tbody tr:hover {
     }
 
     td::before {
-        content: attr(data-label); /* Mostrar el nombre de la columna como etiqueta */
+        content: attr(data-label);
         font-weight: bold;
         text-transform: uppercase;
         margin-right: 10px;
@@ -124,5 +147,80 @@ tbody tr:hover {
     .cobrar-button {
         width: 100%;
         justify-content: center;
+    }
+
+    .remove-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Contenedor principal */
+.cobrar-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    flex: 1;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.search-bar button {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #f4f4f4;
+}
+
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* Botones de acción */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Inputs de cantidad específicos */
+input.cantidad-input {
+    width: 80px; /* Ancho reducido para el input de cantidad */
+    padding: 4px;
+    font-size: 14px;
+}
+
+.action-buttons button {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+/* Estilo para dispositivos móviles */
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column; /* Colocar el botón debajo del input */
+    }
+
+    .action-buttons input.cantidad-input {
+        width: 100%; /* Ocupar todo el ancho disponible */
     }
 }

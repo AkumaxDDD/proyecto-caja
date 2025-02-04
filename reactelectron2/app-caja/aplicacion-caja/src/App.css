@@ -1,45 +1,4 @@
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-} */
 .app-container {
   display: flex;
   flex-direction: column;
@@ -65,7 +24,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 12px;
   font-size: 16px;
   font-weight: 500;
   color: white;
@@ -123,16 +82,22 @@ tbody tr:hover {
   background-color: #e0e0e0; /* Resaltar fila al pasar el mouse */
 }
 
-/* Inputs */
+/* Inputs generales */
 input[type="text"],
 input[type="number"] {
-  width: 100%;
+  width: 94%;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 16px;
   transition: border-color 0.3s ease;
+}
+
+/* Inputs de cantidad específicos */
+input.cantidad-input {
+  width: 100px; /* Ancho reducido para inputs de cantidad */
+  font-size: 16px;
 }
 
 input[type="text"]:focus,
@@ -178,6 +143,9 @@ p {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+li{
+  list-style: none;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -197,8 +165,41 @@ p {
       padding: 8px;
   }
 
+  
   button {
       font-size: 14px;
       padding: 8px 15px;
   }
+}
+/* Estilo general para el scroll */
+.table-container {
+  max-height: 200px; /* Altura máxima para mostrar 3 filas */
+  overflow-y: auto; /* Scroll vertical */
+  border-top: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+/* Estilo para navegadores basados en WebKit (Chrome, Edge, Safari) */
+.table-container::-webkit-scrollbar {
+  width: 10px; /* Ancho del scroll */
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color del fondo del scroll */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #888; /* Color del "pulgar" del scroll */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cambio de color al pasar el mouse */
+}
+
+/* Estilo para navegadores basados en Firefox */
+.table-container {
+  scrollbar-width: thin; /* Opciones: auto, thin, none */
+  scrollbar-color:  #007bff #1e1e1e; /* Primer valor: pulgar, segundo valor: track */
 }

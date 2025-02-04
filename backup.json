@@ -1,0 +1,95 @@
+{
+    "productos": [
+      {
+        "id": 1,
+        "nombre": "Arroz",
+        "precio": 50,
+        "descripcion": "Arroz blanco de alta calidad.",
+        "unidad": "kg",
+        "codigo": "PROD-0001",
+        "fechaCreacion": "2023-10-25T10:00:00.000Z"
+      },
+      {
+        "id": 2,
+        "nombre": "Leche",
+        "precio": 80,
+        "descripcion": "Leche entera en envase de 1 litro.",
+        "unidad": "litro",
+        "codigo": "PROD-0002",
+        "fechaCreacion": "2023-10-25T10:05:00.000Z"
+      },
+      {
+        "id": 3,
+        "nombre": "Pan",
+        "precio": 20,
+        "descripcion": "Pan fresco de barra.",
+        "unidad": "unidad",
+        "codigo": "PROD-0003",
+        "fechaCreacion": "2023-10-25T10:10:00.000Z"
+      },
+      {
+        "id": 4,
+        "nombre": "Huevos",
+        "precio": 70,
+        "descripcion": "Caja de 12 huevos blancos.",
+        "unidad": "docena",
+        "codigo": "PROD-0004",
+        "fechaCreacion": "2023-10-25T10:15:00.000Z"
+      },
+      {
+        "id": 5,
+        "nombre": "Aceite de Oliva",
+        "precio": 120,
+        "descripcion": "Aceite de oliva extra virgen en botella de 1 litro.",
+        "unidad": "litro",
+        "codigo": "PROD-0005",
+        "fechaCreacion": "2023-10-25T10:20:00.000Z"
+      },
+      {
+        "id": 6,
+        "nombre": "Azúcar",
+        "precio": 40,
+        "descripcion": "Azúcar blanca refinada en paquete de 1 kg.",
+        "unidad": "kg",
+        "codigo": "PROD-0006",
+        "fechaCreacion": "2023-10-25T10:25:00.000Z"
+      },
+      {
+        "id": 7,
+        "nombre": "Café",
+        "precio": 90,
+        "descripcion": "Café molido en paquete de 250 g.",
+        "unidad": "g",
+        "codigo": "PROD-0007",
+        "fechaCreacion": "2023-10-25T10:30:00.000Z"
+      },
+      {
+        "id": 8,
+        "nombre": "Papel Higiénico",
+        "precio": 150,
+        "descripcion": "Paquete de 12 rollos de papel higiénico.",
+        "unidad": "unidad",
+        "codigo": "PROD-0008",
+        "fechaCreacion": "2023-10-25T10:35:00.000Z"
+      },
+      {
+        "id": 9,
+        "nombre": "Detergente Líquido",
+        "precio": 100,
+        "descripcion": "Detergente líquido para ropa en envase de 1 litro.",
+        "unidad": "litro",
+        "codigo": "PROD-0009",
+        "fechaCreacion": "2023-10-25T10:40:00.000Z"
+      },
+      {
+        "id": 10,
+        "nombre": "Shampoo",
+        "precio": 130,
+        "descripcion": "Shampoo para cabello normal en botella de 500 ml.",
+        "unidad": "ml",
+        "codigo": "PROD-0010",
+        "fechaCreacion": "2023-10-25T10:45:00.000Z"
+      }
+    ],
+    "cierres": []
+  }

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getProductos, editProducto } from '../database';
+import CustomSelect from './CustomSelect'; // Importa el componente personalizado
 
 function Editar({ db, setProductos }) {
     const [productoId, setProductoId] = useState('');
     const [nombre, setNombre] = useState('');
     const [precio, setPrecio] = useState('');
     const [descripcion, setDescripcion] = useState('');
+    const [unidad, setUnidad] = useState('unidad'); // Estado para la unidad del producto
     const [productos, setProductosLocal] = useState([]); // Estado local para almacenar productos
 
     // Función para obtener los productos al cargar el componente
@@ -25,13 +27,13 @@ function Editar({ db, setProductos }) {
 
     // Función para editar un producto
     const handleEditarProducto = async () => {
-        if (!db || !productoId.trim() || !nombre.trim() || !precio.trim() || !descripcion.trim()) {
+        if (!db || !productoId.trim() || !nombre.trim() || !precio.trim()) {
             alert("Por favor, completa todos los campos.");
             return;
         }
 
         try {
-            await editProducto(db, parseInt(productoId), nombre, parseFloat(precio), descripcion);
+            await editProducto(db, parseInt(productoId), nombre, parseFloat(precio), descripcion, unidad);
             const productosActualizados = await getProductos(db);
             setProductos(productosActualizados); // Actualizar el estado global
             setProductosLocal(productosActualizados); // Actualizar el estado local
@@ -39,6 +41,7 @@ function Editar({ db, setProductos }) {
             setNombre('');
             setPrecio('');
             setDescripcion('');
+            setUnidad('unidad'); // Reiniciar el campo de unidad
             alert("Producto editado exitosamente.");
         } catch (error) {
             console.error("Error editando producto:", error);
@@ -66,15 +69,26 @@ function Editar({ db, setProductos }) {
                 />
                 <input
                     type="number"
+                    step="0.01"
                     placeholder="Nuevo precio"
                     value={precio}
                     onChange={(e) => setPrecio(e.target.value)}
                 />
-                                <input
+                <input
                     type="text"
                     placeholder="Nueva descripción"
                     value={descripcion}
-                    onChange={(e) => setNombre(e.target.value)}
+                    onChange={(e) => setDescripcion(e.target.value)} // Corregido: ahora actualiza "descripcion"
+                />
+                {/* Menú desplegable personalizado */}
+                <CustomSelect 
+                    options={[
+                        { value: "unidad", label: "Por unidad", icon: "fa-solid fa-box" },
+                        { value: "kg", label: "Por kilogramo (kg)", icon: "fa-solid fa-weight-hanging" },
+                        { value: "litro", label: "Por litro (L)", icon: "fa-solid fa-bottle-water" },
+                    ]}
+                    value={unidad}
+                    onChange={(value) => setUnidad(value)}
                 />
                 <button onClick={handleEditarProducto} className="edit-button">
                     <i className="fa-solid fa-pen-to-square"></i> Editar
@@ -91,6 +105,7 @@ function Editar({ db, setProductos }) {
                             <th>Código</th>
                             <th>Nombre</th>
                             <th>Precio</th>
+                            <th>Unidad</th>
                             <th>Descripción</th>
                             <th>Fecha de Creación</th>
                         </tr>
@@ -103,13 +118,14 @@ function Editar({ db, setProductos }) {
                                     <td><strong>{producto.codigo}</strong></td>
                                     <td>{producto.nombre}</td>
                                     <td>${producto.precio}</td>
+                                    <td>{producto.unidad}</td>
                                     <td><em>{producto.descripcion}</em></td>
                                     <td>{new Date(producto.fechaCreacion).toLocaleDateString()}</td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="6">No hay productos disponibles.</td>
+                                <td colSpan="7">No hay productos disponibles.</td>
                             </tr>
                         )}
                     </tbody>

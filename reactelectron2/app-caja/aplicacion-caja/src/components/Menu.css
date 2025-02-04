@@ -129,7 +129,15 @@
 .theme-toggle i {
     margin-right: 8px;
 }
-
+/* Mensaje de carga */
+.loading-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 24px;
+    color: #666;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     .menu-toggle {
