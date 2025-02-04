@@ -27,13 +27,12 @@ function Editar({ db, setProductos }) {
 
     // Función para editar un producto
     const handleEditarProducto = async () => {
-        if (!db || !productoId.trim() || !nombre.trim() || !precio.trim()) {
+        if (!db || !productoId.trim() || !nombre.trim() || !precio.trim() || !unidad.trim() || !descripcion.trim()) {
             alert("Por favor, completa todos los campos.");
             return;
         }
-
         try {
-            await editProducto(db, parseInt(productoId), nombre, parseFloat(precio), descripcion, unidad);
+            await editProducto(db, parseInt(productoId), nombre, parseFloat(precio), unidad, descripcion);
             const productosActualizados = await getProductos(db);
             setProductos(productosActualizados); // Actualizar el estado global
             setProductosLocal(productosActualizados); // Actualizar el estado local
@@ -52,7 +51,6 @@ function Editar({ db, setProductos }) {
     return (
         <div className="editar-container">
             <h2>Editar Producto</h2>
-
             {/* Formulario para editar un producto */}
             <div className="form-section">
                 <input
@@ -78,7 +76,7 @@ function Editar({ db, setProductos }) {
                     type="text"
                     placeholder="Nueva descripción"
                     value={descripcion}
-                    onChange={(e) => setDescripcion(e.target.value)} // Corregido: ahora actualiza "descripcion"
+                    onChange={(e) => setDescripcion(e.target.value)} // Correcto: actualiza "descripcion"
                 />
                 {/* Menú desplegable personalizado */}
                 <CustomSelect 
@@ -88,13 +86,12 @@ function Editar({ db, setProductos }) {
                         { value: "litro", label: "Por litro (L)", icon: "fa-solid fa-bottle-water" },
                     ]}
                     value={unidad}
-                    onChange={(value) => setUnidad(value)}
+                    onChange={(value) => setUnidad(value)} // Correcto: actualiza "unidad"
                 />
                 <button onClick={handleEditarProducto} className="edit-button">
                     <i className="fa-solid fa-pen-to-square"></i> Editar
                 </button>
             </div>
-
             {/* Tabla de productos */}
             <div className="product-list-section">
                 <h3>Lista de Productos</h3>

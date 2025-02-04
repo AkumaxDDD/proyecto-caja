@@ -54,7 +54,7 @@ export async function addProducto(db, nombre, precio, descripcion, unidad) {
 }
 
 // Editar un producto por ID
-export async function editProducto(db, id, nombre, precio, unidad) {
+export async function editProducto(db, id, nombre, precio, unidad, descripcion) {
     if (!db) throw new Error("La base de datos no está inicializada.");
     const productoExistente = await db.get('productos', id);
     if (!productoExistente) {
@@ -65,6 +65,7 @@ export async function editProducto(db, id, nombre, precio, unidad) {
         nombre,
         precio,
         unidad, // Actualizar la unidad si es necesario
+        descripcion,
     };
     await db.put('productos', productoActualizado);
 }
