@@ -1,0 +1,70 @@
+/* Contenedor principal del select personalizado */
+.custom-select {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+/* Estilo del valor seleccionado */
+.selected-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+.selected-option:hover {
+    border-color: #007bff;
+}
+
+/* Flecha hacia abajo */
+.selected-option i {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Lista de opciones */
+.options-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    background-color: #fff;
+    z-index: 10;
+    margin-top: 5px;
+}
+
+/* Estilo de cada opción */
+.options-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.options-list li:hover {
+    background-color: #f0f8ff; /* Color de fondo al pasar el mouse */
+}
+
+/* Íconos en las opciones */
+.options-list i {
+    font-size: 18px;
+    color: #007bff;
+}
