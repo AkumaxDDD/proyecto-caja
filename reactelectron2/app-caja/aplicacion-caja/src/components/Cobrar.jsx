@@ -12,20 +12,17 @@ function Cobrar({ db, productos, setCaja }) {
             setResultadosBusqueda([]);
             return;
         }
-
         const resultados = productos.filter((producto) => {
             const codigoMatch = producto.codigo?.toLowerCase().includes(busqueda.toLowerCase());
             const nombreMatch = producto.nombre?.toLowerCase().includes(busqueda.toLowerCase());
             const precioMatch = producto.precio === parseFloat(busqueda);
-
             return codigoMatch || nombreMatch || precioMatch;
         });
-
         setResultadosBusqueda(resultados);
 
+        // Si hay un solo resultado, NO lo agregamos automáticamente
         if (resultados.length === 1) {
-            handleSeleccionarProducto(resultados[0]);
-            setBusqueda("");
+            console.log("Producto encontrado, pero no se agrega automáticamente:", resultados[0]);
         }
     };
 
@@ -36,6 +33,8 @@ function Cobrar({ db, productos, setCaja }) {
             setTotal(nuevoTotal);
             return [...prev, producto];
         });
+        setResultadosBusqueda([]); // Limpiar resultados de búsqueda después de seleccionar
+        setBusqueda(""); // Limpiar el campo de búsqueda
     };
 
     // Función para realizar un cobro
@@ -44,7 +43,6 @@ function Cobrar({ db, productos, setCaja }) {
             console.error("setCaja no es una función válida");
             return;
         }
-
         if (total > 0) {
             setCaja((prev) => [...prev, { productos: productosSeleccionados, total }]);
             setProductosSeleccionados([]);
@@ -74,16 +72,16 @@ function Cobrar({ db, productos, setCaja }) {
                 <div className="results-section">
                     <h3>Resultados de Búsqueda</h3>
                     <table>
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Descripción</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Descripción</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             {resultadosBusqueda.map((producto) => (
                                 <tr key={producto.id}>
                                     <td><strong>{producto.codigo}</strong></td>
@@ -96,10 +94,9 @@ function Cobrar({ db, productos, setCaja }) {
                                         </button>
                                     </td>
                                 </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
 
@@ -117,7 +114,7 @@ function Cobrar({ db, productos, setCaja }) {
                         </tr>
                     </thead>
                     <tbody>
-                    {productosSeleccionados.length > 0 ? (
+                        {productosSeleccionados.length > 0 ? (
                             productosSeleccionados.map((producto, index) => (
                                 <tr key={producto.id}>
                                     <td><strong>{producto.codigo}</strong></td>
@@ -130,8 +127,7 @@ function Cobrar({ db, productos, setCaja }) {
                             <tr>
                                 <td colSpan="5">No hay productos seleccionados.</td>
                             </tr>
-                        )
-                        }
+                        )}
                     </tbody>
                 </table>
                 <h3>Total: ${total.toFixed(2)}</h3>
