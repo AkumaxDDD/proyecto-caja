@@ -22,14 +22,6 @@ function Cobrar({ db, productos, setCaja }) {
         setProductosFiltrados(resultados);
     };
 
-    // Función para manejar cambios en la cantidad
-    const handleCantidadChange = (id, value) => {
-        setCantidades((prev) => ({
-            ...prev,
-            [id]: value,
-        }));
-    };
-
     // Función para seleccionar un producto
     const handleSeleccionarProducto = (producto) => {
         const cantidadNumerica = parseFloat(cantidades[producto.id]);
@@ -38,10 +30,11 @@ function Cobrar({ db, productos, setCaja }) {
             return;
         }
         const precioTotal = producto.unidad === "unidad"
-            ? producto.precio * Math.ceil(cantidadNumerica)
-            : producto.precio * cantidadNumerica;
+            ? producto.precio * Math.ceil(cantidadNumerica) // Redondear hacia arriba para productos por unidad
+            : producto.precio * cantidadNumerica; // Multiplicar por la cantidad para peso/volumen
 
         const productoConCantidad = {
+            idUnico: Date.now(), // Identificador único para cada entrada
             producto,
             cantidad: cantidadNumerica,
             precioTotal: precioTotal,
@@ -53,13 +46,21 @@ function Cobrar({ db, productos, setCaja }) {
             return [...prev, productoConCantidad];
         });
 
-        setCantidades((prev) => ({ ...prev, [producto.id]: "" }));
+        setCantidades((prev) => ({ ...prev, [producto.id]: "" })); // Limpiar la cantidad después de agregar
+    };
+
+    // Función para manejar cambios en la cantidad
+    const handleCantidadChange = (id, value) => {
+        setCantidades((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
     };
 
     // Función para quitar un producto seleccionado
-    const handleQuitarProducto = (id) => {
+    const handleQuitarProducto = (idUnico) => {
         setProductosSeleccionados((prev) => {
-            const nuevosProductos = prev.filter((p) => p.producto.id !== id);
+            const nuevosProductos = prev.filter((p) => p.idUnico !== idUnico);
             const nuevoTotal = nuevosProductos.reduce((acc, p) => acc + p.precioTotal, 0);
             setTotal(nuevoTotal);
             return nuevosProductos;
@@ -73,16 +74,41 @@ function Cobrar({ db, productos, setCaja }) {
             return;
         }
         if (total > 0) {
-            setCaja((prev) => [
-                ...prev,
-                {
-                    productos: productosSeleccionados,
-                    total: total,
-                },
-            ]);
+            setCaja((prev) => [...prev, { productos: productosSeleccionados, total }]);
             setProductosSeleccionados([]);
             setTotal(0);
         }
+    };
+
+    // Función para imprimir el ticket
+    const handleImprimirTicket = () => {
+        const fechaActual = new Date().toLocaleString();
+        const numeroTicket = Date.now(); // Generar un número único para el ticket
+        // Crear el contenido del ticket
+        const ticketHTML = `
+Ticket de Venta
+Fecha: ${fechaActual}
+Número de Ticket: #${numeroTicket}
+Producto
+Cantidad
+Precio Unitario
+Total
+        ${productosSeleccionados.map((producto) => `
+${producto.producto.nombre}
+${producto.cantidad} ${producto.producto.unidad}
+$${producto.producto.precio.toFixed(2)}
+$${producto.precioTotal.toFixed(2)}
+        `).join("")}
+Total: $${total.toFixed(2)}
+Gracias por su compra. ¡Vuelva pronto!
+        `;
+        // Crear una nueva ventana para el ticket
+        const ventanaImpresion = window.open("", "_blank");
+        ventanaImpresion.document.write(`
+        <h1>Ticket de Venta</h1>
+        <pre>${ticketHTML}</pre>
+        `);
+        ventanaImpresion.document.close();
     };
 
     return (
@@ -96,11 +122,11 @@ function Cobrar({ db, productos, setCaja }) {
                     value={busqueda}
                     onChange={(e) => {
                         setBusqueda(e.target.value);
-                        handleBuscarProducto();
+                        handleBuscarProducto(); // Actualizar la lista automáticamente mientras se escribe
                     }}
                 />
                 <button onClick={handleBuscarProducto}>
-                    <i className="fa-solid fa-magnifying-glass"></i>
+                    <i className="fa-solid fa-magnifying-glass"></i> Buscar
                 </button>
             </div>
 
@@ -165,14 +191,14 @@ function Cobrar({ db, productos, setCaja }) {
                     <tbody>
                         {productosSeleccionados.length > 0 ? (
                             productosSeleccionados.map((producto) => (
-                                <tr key={producto.producto.id}>
+                                <tr key={producto.idUnico}>
                                     <td>{producto.producto.codigo}</td>
                                     <td>{producto.producto.nombre}</td>
                                     <td>{producto.cantidad} {producto.producto.unidad}</td>
                                     <td>${producto.producto.precio.toFixed(2)}</td>
                                     <td>${producto.precioTotal.toFixed(2)}</td>
                                     <td>
-                                        <button onClick={() => handleQuitarProducto(producto.producto.id)} className="remove-button">
+                                        <button onClick={() => handleQuitarProducto(producto.idUnico)} className="remove-button">
                                             Quitar
                                         </button>
                                     </td>
@@ -189,6 +215,7 @@ function Cobrar({ db, productos, setCaja }) {
 
             <h3>Total: ${total.toFixed(2)}</h3>
             <button onClick={handleCobrar}>Cobrar</button>
+            <button onClick={handleImprimirTicket}>Imprimir Ticket</button>
         </div>
     );
 }
